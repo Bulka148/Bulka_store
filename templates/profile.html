@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Профиль</title>
+{% endblock %}
+
+{% block body %}
+    <section class="vh-100 bg-image">
+      <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+              <div class="card" style="border-radius: 15px; background: rgba(250, 250, 250, 0.6);">
+                <div class="card-body p-5">
+                  <h2 class="text-uppercase text-center mb-5">Профиль</h2>
+
+                  <form method="post">
+                    <h4 class="text-center">Личные данные</h4>
+
+                    <div class="form-outline mb-4">
+                      <input id="login" type="login" name="login" class="form-control form-control-lg" value="{{human.login}}"/>
+                      <label class="form-label" for="login">Ник</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <input id="password" name="password" class="form-control form-control-lg" value="{{human.password}}"/>
+                      <label class="form-label" for="password">Пароль</label>
+                    </div>
+
+                    <h4 class="text-center">Мои заказы</h4>
+                    {% for booking in bookings %}
+                      <p><a class="btn btn-labeled btn-xs btn-info" href="{{url_for('booking', booking_id=booking.booking_id)}}">Заказ {{booking.booking_id}}</a></p>
+                    {% endfor %}
+
+                    <div class="d-flex justify-content-center">
+                      <button type="submit"
+                        class="btn btn-warning btn-block btn-lg gradient-custom-4 text-body">Сохранить</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

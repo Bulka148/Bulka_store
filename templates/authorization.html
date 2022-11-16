@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Авторизация</title>
+{% endblock %}
+
+{% block body %}
+    <section class="vh-100 bg-image">
+      <div class="mask d-flex align-items-center h-100 gradient-custom-3" >
+        <div class="container h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+              <div class="card" style="border-radius: 15px; background: rgba(250, 250, 250, 0.6);">
+                <div class="card-body p-5">
+                  <h2 class="text-uppercase text-center mb-5">Авторизация</h2>
+
+                  <form id="form" method="post">
+
+                    <div class="form-outline mb-4">
+                      <input id="login" type="text" name="login" class="form-control form-control-lg" />
+                      <label class="form-label" for="login">Ник</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <input id="password" type="password" name="password" class="form-control form-control-lg" />
+                      <label class="form-label" for="password">Пароль</label>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                      <button id="submit_button" type="submit"
+                        class="btn btn-warning btn-block btn-lg gradient-custom-4 text-body">Войти</button>
+                    </div>
+
+                    <p class="text-center text-muted mt-5 mb-0">Нет аккаунта? <a href="{{url_for('registration')}}"
+                        class="fw-bold text-body"><u>Зарегистрируйся здесь</u></a></p>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
+    <script>
+        $('#submit_button').on('click', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '{{ url_for("authorization") }}',
+                method: 'get',
+                dataType: 'html',
+                data: {'login': document.getElementById('login').value,
+                       'password': document.getElementById('password').value},
+                success: function (data) {
+                  data = JSON.parse(data)
+                  if (data['status'] === 'error') {alert(data['message'])}
+                  else {document.getElementById('form').submit()}
+                }
+            })
+        })
+    </script>
+{% endblock %}

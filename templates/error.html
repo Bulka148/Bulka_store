@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Ошибка</title>
+{% endblock %}
+
+{% block body %}
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold">{{error.code}}</h1>
+        <p class="fs-3"> <span class="text-danger">Ой!</span> Ошибка </p>
+        <p class="lead">
+            {{error}}
+          </p>
+        <a href="/" class="btn btn-primary">Вернуться на главную</a>
+    </div>
+</div>
+{% endblock %}

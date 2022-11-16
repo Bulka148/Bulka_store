@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>BulkaStore</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
+
+    <script>
+        function add_to_cart(bread_id) {
+          $.ajax({
+              url: '{{ url_for("add_to_cart") }}',
+              method: 'get',
+              dataType: 'html',
+              data: {'bread_id': bread_id},
+              success: function (data) {
+                  alert(JSON.parse(data)['message'])
+              }
+          })
+        }
+
+        function add_to_favourite(bread_id) {
+          $.ajax({
+              url: '{{ url_for("add_to_favourite") }}',
+              method: 'get',
+              dataType: 'html',
+              data: {'bread_id': bread_id},
+              success: function (data) {
+                  alert(JSON.parse(data)['message'])
+              }
+          })
+        }
+    </script>
+    {% block style %}{% endblock %}
+</head>
+
+<body style="background: url('/static/fon1.jpg') no-repeat center center fixed; background-size: cover;">
+    {% block body %}{% endblock %}
+    {% block script %}{% endblock %}
+
+</body>
+</html>

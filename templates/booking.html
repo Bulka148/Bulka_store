@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Заказ {{order.date}}</title>
+{% endblock %}
+
+{% block body %}
+<body>
+
+    <div class="container py-3">
+      <header>
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+          <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+              <span class="fs-4"><label class="fs-3 fw-bold">BulkaStore</label> - Магазин выпечки</span>
+          </a>
+
+          <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+            {% if human.is_admin %}
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('add_bread')}}">Добавить выпечку</a>
+            {% endif %}
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('registration')}}">Зарегистрироваться</a>
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('authorization')}}">Войти</a>
+            {% if human.login != 'Неизвестный' %}
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('favourite')}}">Избранное</a>
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('cart')}}">Корзина</a>
+            <a class="me-5 py-2" href="{{url_for('profile')}}">{{human.login}}</a>
+            {% endif %}
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+          {%for e in booking.bread%}
+            <div class="mx-1 card g-2" style="width: 16rem; background: rgba(220, 150, 80, 0.7);">
+              <img src="/static/bread{{e.id}}.jpg" style="object-fit: cover; height: 300px; border-radius: 10px;" class="card-img-top">
+                <div class="card-body my-auto">
+                <h5 class="card-title">{{e.name}}</h5>
+                <h3 class="card-title">{{e.price}} руб</h3>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </main>
+
+</body>
+{% endblock %}

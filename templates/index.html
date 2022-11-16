@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block body %}
+<body>
+    <div class="container py-3">
+      <header>
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+          <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+              <img id="rot_image" src="/static/img3.png" style="width: 50px;">
+              <span class="fs-4"><label class="fs-3 fw-bold"> Bulka shop</label> - Магазин выпечки</span>
+          </a>
+
+          <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+            {% if human.is_admin %}
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('add_bread')}}">Добавить выпечку</a>
+            {% endif %}
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('registration')}}">Зарегистрироваться</a>
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('authorization')}}">Войти</a>
+            {% if human.login != 'Неизвестный' %}
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('favourite')}}">Избранное</a>
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('cart')}}">Корзина</a>
+            <a class="me-5 py-2" href="{{url_for('profile')}}">{{human.login}}</a>
+            {% endif %}
+          </nav>
+        </div>
+      </header>
+
+        <header>
+          <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('index')}}">Всё</a>
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('type_bread', b_type='Хлеб')}}">Хлеб</a>
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('type_bread', b_type='Пироги')}}">Пироги</a>
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('type_bread', b_type='Печенье')}}">Печенье</a>
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('type_bread', b_type='Торты')}}">Торты</a>
+            <a class="me-3 py-2 text-dark text-decoration-none" href="{{url_for('type_bread', b_type='Кексы')}}">Кексы</a>
+          </nav>
+            <form method="post">
+                <p><label>Цена от
+                <input class="input-sm" name="min_price" value="{{filter.min_price}}" style="width: 60px; border-radius: 10px; background: rgba(0, 0, 0, 0);"> руб до
+                <input class="input-sm" name="max_price" value="{{filter.max_price}}" style="width: 60px; border-radius: 10px; background: rgba(0, 0, 0, 0);"> руб</label>
+                <button class="btn btn-warning" style="border-radius: 30px">Подтвердить</button>
+            </p>
+            </form>
+        </header>
+
+      </aside>
+          <div class="col-12">
+                <main>
+                  <div class="row row-cols-3 row-cols-md-3 mb-3 text-center">
+                    {%for e in bread%}
+                      {% if not filter.bread_type or filter.bread_type|lower == e.type|lower %}
+                          {% if (not filter.min_price or e.price >= filter.min_price) and (not filter.max_price or e.price <= filter.max_price) %}
+                              <div class="mx-1 card g-2" style="width: 16rem; background: rgba(220, 150, 80, 0.7);">
+                                <img src="/static/bread{{e.id}}.jpg" style="object-fit: cover; height: 250px; border-radius: 10px;" class="card-img-top">
+                                <div class="card-body my-auto">
+                                  <h5 class="card-title">{{e.name}}</h5>
+                                  <h3 class="card-title">{{e.price}} руб</h3>
+                                  <button onclick="add_to_cart({{e.id}})" class="btn btn-warning btn-lg">Купить</button>
+                                  <button onclick="add_to_favourite({{e.id}})" class="btn btn-labeled btn-warning"><span class="btn-label"><i class="fa fa-bookmark"></i></span></button>
+                                  {% if human.is_admin %}
+                                    <a href="{{ url_for('edit_bread', bread_id=e.id) }}">Изменить</a>
+                                  {% endif %}
+                                </div>
+                              </div>
+                          {% endif %}
+                      {% endif %}
+                    {% endfor %}
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      {% with messages = get_flashed_messages() %}
+         {% if messages %}
+            {% for message in messages %}
+                <script>alert("{{message}}")</script>
+            {% endfor %}
+         {% endif %}
+      {% endwith %}
+</body>
+{% endblock %}
+
+{% block script %}
+ <script>
+    let obj = document.getElementById('rot_image')
+    let deg = 0
+    setInterval(rot_anim, 30)
+    function rot_anim() {
+        obj.style.transform = "rotate(" + deg + "deg)";
+        deg = (deg + 0.3) % 360
+    }
+ </script>
+{% endblock %}
