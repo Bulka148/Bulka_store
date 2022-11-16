@@ -14,7 +14,7 @@ def index():
                  'bread_type': ''}
 
     human = session['human'] if 'human' in session else {'id': 0, 'login': 'Неизвестный', 'email': '', 'is_admin': False}
-    # print(6)
+    print(6)
     return render_template("index.html", bread=db.get_bread(), human=human, filter=my_filter,
                            cart=db.get_from_cart(human['id']), favourite=db.get_from_favourite(human['id']))
 
@@ -23,7 +23,6 @@ def index():
 def type_bread(b_type):
     my_filter = {'min_price': int(request.form['min_price']) if request.form.get('min_price') else 0,
                  'max_price': int(request.form['max_price']) if request.form.get('max_price') else 0,
-                 'find_word': request.form.get('find_word', ''),
                  'bread_type': b_type}
 
     human = session['human'] if 'human' in session else {'id': 0, 'login': 'Неизвестный', 'email': '',
@@ -35,7 +34,7 @@ def type_bread(b_type):
 @app.route("/cart")
 def cart():
     bread_ids = db.get_from_cart(session['human']['id'])
-    human_bread = [p for p in db.get_bread() if p['id'] in bread_ids]
+    human_bread = [p for p in db.get_bread() if p['id'] in bread_ids] #создание переменной сущностей продуктов
     full_price = sum([p['price'] for p in human_bread])
     return render_template("cart.html", human_bread=human_bread, human=session['human'], full_price=full_price)
 
@@ -111,7 +110,7 @@ def profile():
     bookings = [db.get_booking(booking_id) for booking_id in db.get_bookings_id(session['human']['id'])]
     return render_template("profile.html", human=session.get('human'), bookings=bookings)
 
-#Добавление товара для админа
+#Добавление товара для админа (add_bread только для админов)
 @app.route("/add_bread", methods=['POST', 'GET'])
 def add_bread():
     if request.method == 'POST':
@@ -126,7 +125,7 @@ def add_bread():
 
     return render_template("add_bread.html")
 
-#Изменение товара или удаление
+#Изменение товара
 @app.route("/edit_bread/<int:bread_id>", methods=['POST', 'GET'])
 def edit_bread(bread_id):
     if request.method == 'POST':
@@ -144,7 +143,7 @@ def edit_bread(bread_id):
 
     return render_template("edit_bread.html", bread=db.get_bread(bread_id=bread_id))
 
-
+#Удаление товара
 @app.route("/delete_bread/<int:bread_id>")
 def delete_bread(bread_id):
     db.delete_bread(bread_id)
@@ -196,4 +195,4 @@ def booking(booking_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
